@@ -1,0 +1,18 @@
+{
+   "aws_access_key": "ABCDEFGHIJ",
+   "aws_secret_key": "123abc",
+   "aws_subnet_id": "subnet-e16eaf84",
+   "aws_region": "us-west-1",
+   "emr_version": "emr-5.0.0",
+   "emr_master_node_count": 1,
+   "emr_master_node_type": "m4.large",
+   "emr_core_node_count": 2,
+   "emr_core_node_type": "m4.large",
+   "emr_task_node_count": -1,
+   "emr_task_node_type": "m4.large",
+   "emr_market_type": "ON_DEMAND",
+   "emr_market_bid_price": ".05",
+   "emr_cluster_name": "Default EMR Cluster",
+   "emr_log_uri": "s3://nkapinos-s3/emr_automation_logs",
+   "ec2_keyname": "nate-emr"
+}
