@@ -1,0 +1,11 @@
+{
+    "aws_access_key": "ABCDEFGHI",
+    "aws_secret_key": "123ABCdef",
+    "aws_region": "us-west-1",
+    "aws_ami_id": "ami-2c8fc64c",
+    "aws_key_name": "nate-baker",
+    "aws_security_group": "sg-945d90f1",
+    "aws_instance_type": "m4.2xlarge",
+    "aws_instance_disk_size": 100,
+    "aws_subnet_id": "subnet-e16eaf84"
+}

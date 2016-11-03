@@ -1,0 +1,28 @@
+echo "========== WIP NOT FINISHED ============="
+
+echo "======== MUST BE RUN ON CENTOS 6 AMI =========="
+
+echo "========= INSTALLING DEPENDENCIES ==========="
+yum -y install wget telnet screen ed lsof iotop epel-release ntp
+yum -y install python-pip httpd
+service ntp start
+chkconfig ntpd on
+service iptables stop
+service httpd start
+hostname=$(cat /etc/hostname)
+export HOSTNAME=$(cat /etc/hostname)
+wget -nv http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.4.1.0/ambari.repo -O /etc/yum.repos.d/ambari.repo
+yum -y install ambari-server
+ambari-server setup -s
+service ambari-server start
+ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
+cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+echo "====== TODO:  INSTALL HDFS, YARN, ZOOKEEPER THROUGH BLUEPRINT ========"
+echo "======= TODO:  pull hdb-2.0.1.0-1625.tar ========"
+mkdir /staging
+chmod a+rx /staging
+tar -xvf hdb-2.0.1.0-1625.tar -C /staging
+/staging/hdb-2.0.1.0/setup_repo.sh
+yum -y install hawq-ambari-plugin
+/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.4
+service ambari-server restart

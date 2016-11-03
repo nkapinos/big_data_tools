@@ -1,0 +1,24 @@
+echo "REMEMBER TO DISABLE SELINUX - try to do this temporary or create custom AMI"
+echo "========= INSTALLING DEPENDENCIES ==========="
+yum -y install wget telnet screen ed lsof iotop epel-release krb5-workstation krb5-libs ntp
+yum -y install python-pip
+systemctl start ntpd.service
+systemctl enable ntpd.service
+hostname=$(cat /etc/hostname)
+export HOSTNAME=$(cat /etc/hostname)
+wget -nv https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/cloudera-cdh5.repo -O /etc/yum.repos.d/cloudera-cdh5.repo
+wget -nv https://archive.cloudera.com/gplextras5/redhat/7/x86_64/gplextras/cloudera-gplextras5.repo -O /etc/yum.repos.d/cloudera-gplextras5.repo
+rpm --import https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/RPM-GPG-KEY-cloudera
+yum clean all
+yum -y install hadoop-yarn-resourcemanager
+yum -y install hadoop-hdfs-namenode
+yum -y install hadoop-hdfs-secondarynamenode
+yum -y install hadoop-yarn-nodemanager hadoop-hdfs-datanode hadoop-mapreduce
+yum -y install hadoop-mapreduce-historyserver hadoop-yarn-proxyserver
+yum -y install hadoop-lzo
+cp -r /etc/hadoop/conf.empty /etc/hadoop/conf.cdh5
+alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.cdh5 
+alternatives --set hadoop-conf /etc/hadoop/conf.cdh5
+printf "<configuration>\n" > /etc/hadoop/conf.cdh5/core-site.xml
+printf "<property>\n<name>fs.defaultFS</name>\n<value>hdfs://$HOSTNAME:8020</value>\n</property>" >> /etc/hadoop/conf.cdh5/core-site.xml
+printf "</configuration>\n" >> /etc/hadoop/conf.cdh5/core-site.xml
